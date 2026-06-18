@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://snapasset.vercel.app/sitemap.xml

@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
+import { Analytics } from '@vercel/analytics/react'
 
 import './App.css'
 
@@ -13,6 +14,35 @@ const ToolApp    = lazy(() => import('./App'))
 const HowItWorks = lazy(() => import('./pages/HowItWorks'))
 const About      = lazy(() => import('./pages/About'))
 const Comparison = lazy(() => import('./pages/Comparison'))
+
+function MobileBlocked() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "24px",
+        textAlign: "center",
+        background: "#09090f",
+        color: "#fff",
+        fontFamily: "system-ui",
+      }}
+    >
+      <h1>This website is optimized for desktop devices.</h1>
+
+      <p style={{ maxWidth: "500px", lineHeight: 1.6 }}>
+        Please access this website from a desktop or laptop computer.
+        If you are using a mobile browser, you may also try enabling
+        <strong> "Desktop Site"</strong> mode for the best experience.
+      </p>
+    </div>
+  );
+}
+
+const isMobile = window.innerWidth < 768;
 
 function PageLoader() {
   return (
@@ -34,6 +64,9 @@ function PageLoader() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+    isMobile ? (
+    <MobileBlocked />
+  ) : (
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
@@ -45,7 +78,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/comparison"   element={<Comparison />} />
           </Routes>
         </Suspense>
+         <Analytics />
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>
 )
+);

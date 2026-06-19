@@ -605,9 +605,40 @@ export default function App(){
     <div className="app">
       <header className="topbar">
         <span className="topbar-logo">SnapAsset</span>
-        <span className="topbar-phase">{PHASE_LABEL[phase]||''}</span>
-        {showReuseBtn&&<button className="btn-reuse" onClick={handleReuseClick}>↩ Reuse</button>}
-        {phase!=='idle'&&<button className="btn-new-img" onClick={handleResetClick}>✦ New Image</button>}
+
+        {(!showReuseBtn && phase === 'idle') ? (
+          <nav className="topbar-nav" aria-label="Main navigation">
+            <Link to="/how-it-works" className="topbar-nav-link">
+              How It Works
+            </Link>
+
+            <Link to="/about" className="topbar-nav-link">
+              About
+            </Link>
+
+            <Link to="/comparison" className="topbar-nav-link">
+              Compare
+            </Link>
+          </nav>
+        ) : (
+          <>
+            <span className="topbar-phase">
+              {PHASE_LABEL[phase] || ''}
+            </span>
+
+            {showReuseBtn && (
+              <button className="btn-reuse" onClick={handleReuseClick}>
+                ↩ Reuse
+              </button>
+            )}
+
+            {phase !== 'idle' && (
+              <button className="btn-new-img" onClick={handleResetClick}>
+                ✦ New Image
+              </button>
+            )}
+          </>
+        )}
       </header>
       {error&&<div className="error-banner">{error}</div>}
       <div className="body-layout">
